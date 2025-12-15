@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hilarious Monkey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Basic Reset and Font Setup */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #fff; /* Default text color for the dark section */
+            line-height: 1.6;
+        }
+
+        /* Header/Hero Section Styling */
+        .hero-section {
+            background-color: #363a40; /* Dark background color */
+            /* Add a subtle dark gradient/pattern effect similar to the screenshot */
+            background-image: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 100%),
+                              /* A simple triangle pattern in SVG for the background effect */
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="%23363A40"/><path d="M 0 0 L 100 0 L 100 100 Z" fill="rgba(255, 255, 255, 0.05)"/></svg>');
+            background-size: cover;
+            padding-bottom: 50px; /* Space below the welcome content */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 400;
+            opacity: 0.8; /* Slightly less bright for navigation links */
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* Welcome Content Layout */
+        .welcome-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 50px auto 0 auto;
+            padding: 0 50px;
+        }
+
+        .main-title, .subtitle {
+            flex: 1; /* Allows the titles to take up the left space */
+            margin: 0;
+            padding-right: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .main-title {
+            font-size: 4.5em; /* Large size */
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 2.5em; /* Smaller than the main title */
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .description {
+            flex: 1; /* Allows the description to take up the right space */
+            font-size: 1em;
+            font-weight: 300;
+            opacity: 0.9;
+            padding-top: 20px; /* Align with the titles */
+        }
+
+        /* Main Body - The White Section */
+        .main-body {
+            background-color: #ffffff;
+            min-height: 400px; /* Ensure it's visible */
+        }
+
+        /* Basic Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 20px 25px;
+            }
+
+            .welcome-content {
+                flex-direction: column; /* Stack elements on smaller screens */
+                padding: 0 25px;
+            }
+
+            .main-title {
+                font-size: 3em;
+            }
+
+            .subtitle {
+                font-size: 1.8em;
+            }
+
+            .main-title, .subtitle, .description {
+                padding-right: 0;
+            }
+            
+            .description {
+                padding-top: 30px;
+                margin-top: 20px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-section">
+        <nav class="navbar">
+            <div class="logo">Hilarious Monkey</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">All archives</a></li>
+            </ul>
+        </nav>
+
+        <div class="welcome-content">
+            <div style="flex: 1;">
+                <h1 class="main-title">Welcome to</h1>
+                <h2 class="subtitle">Hilarious Monkey</h2>
+            </div>
+            <p class="description">
+                Hilarious Monkey is one kind of the Windows Archives which are technically advanced and less timing workshop. So, come on and download some of the exciting archives!
+            </p>
+        </div>
+    </header>
+
+    <main class="main-body">
+        </main>
+
+</body>
+</html>
