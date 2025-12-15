@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows PE Archive - Hilarious Monkey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL RESETS --- */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #333; 
+            line-height: 1.6;
+            background-color: #f7f9fc;
+        }
+
+        a { text-decoration: none; }
+        ul { list-style: none; margin: 0; padding: 0; }
+
+        /* --- HEADER / HERO SECTION --- */
+        .hero-section {
+            background-color: #363a40;
+            background-image: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 100%),
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="%23363A40"/><path d="M 0 0 L 100 0 L 100 100 Z" fill="rgba(255, 255, 255, 0.05)"/></svg>');
+            background-size: cover;
+            padding-bottom: 30px; 
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo { font-size: 1.4em; font-weight: 600; letter-spacing: 0.5px; }
+        .nav-links { display: flex; gap: 30px; }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95em;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .nav-links a:hover { opacity: 1; }
+
+        /* Icon styling + hamburger (from index.html) */
+        .nav-links a svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            opacity: 0.8;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .nav-links a.active svg { opacity: 1; }
+
+        .menu-toggle { display: none; cursor: pointer; z-index: 1001; padding: 5px; }
+        .bar { width: 25px; height: 3px; background-color: #fff; margin: 5px 0; transition: 0.4s; transform-origin: left; }
+        .menu-toggle.nav-open .bar:nth-child(1) { transform: rotate(45deg) translate(2px, -3px); }
+        .menu-toggle.nav-open .bar:nth-child(2) { opacity: 0; }
+        .menu-toggle.nav-open .bar:nth-child(3) { transform: rotate(-45deg) translate(2px, 3px); }
+        .nav-links a.active {
+            font-weight: 700;
+            opacity: 1;
+            border-bottom: 2px solid #fff; 
+            padding-bottom: 3px;
+        }
+
+        /* Detail Page Title Area */
+        .page-title-content {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 50px;
+        }
+        .archive-title {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.1;
+        }
+        .archive-release-date {
+            font-size: 1.1em;
+            font-weight: 300;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+
+        /* --- MAIN BODY CONTENT for Glassmorphism --- */
+        .main-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 50px;
+            background-image: url('https://picsum.photos/1200/800?blur=5'); 
+            background-attachment: fixed; 
+            background-size: cover;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Inner container wrapper */
+        .inner-content {
+            background-color: rgba(255, 255, 255, 0.75); 
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Back Button & Title Container */
+        .title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; 
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-section-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 0 15px;
+            text-align: left; 
+        }
+        
+        /* Style for the Icon Back Button */
+        .back-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        .back-icon-btn svg {
+            fill: #333; 
+            width: 24px;
+            height: 24px;
+            transition: opacity 0.2s;
+        }
+        .back-icon-btn:hover svg {
+            opacity: 0.6;
+        }
+
+        /* Image Styling */
+        .archive-image {
+            display: block;
+            margin: 0 auto 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 450px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .description-text p {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .download-btn {
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .download-btn:hover { background-color: #2c5282; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .navbar { padding: 20px; }
+            .page-title-content { padding: 0 20px; }
+            .archive-title { font-size: 2.5em; }
+            .main-body { padding: 40px 0; }
+            .inner-content { padding: 30px 20px; }
+            .detail-section-title { 
+                text-align: left;
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-section">
+        <nav class="navbar">
+            <div class="logo">Hilarious Monkey</div>
+
+            <div class="menu-toggle" id="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+                <li>
+                    <a href="index.html">
+                        <svg viewBox="0 0 24 24"><path d="M3 12L12 3L21 12V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V12Z"/></svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="feedback.html">
+                        <svg viewBox="0 0 24 24"><path d="M21 15C21 16.1 20.1 17 19 17H7L3 21V5C3 3.9 3.9 3 5 3H19C20.1 3 21 3.9 21 5V15Z"/></svg>
+                        Feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="search-results.html" class="active">
+                        <svg viewBox="0 0 24 24"><path d="M10 4H4C3.46957 4 2.98043 4.21071 2.61464 4.58579C2.24886 4.96086 2 5.44998 2 6V18C2 18.5501 2.24886 19.0391 2.61464 19.4142C2.98043 19.7893 3.46957 20 4 20H20C20.5501 20 21.0391 19.7893 21.4142 19.4142C21.7893 19.0391 22 18.5501 22 18V8C22 7.44998 21.7893 6.96086 21.4142 6.58579C21.0391 6.21071 20.5501 6 20 6H12L10 4Z"/></svg>
+                        All archives
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="page-title-content">
+            <h1 class="archive-title">Windows PE</h1>
+            <p class="archive-release-date">Released on: 14 Dec, 2025</p>
+        </div>
+    </header>
+
+    <main class="main-body">
+        
+        <div class="inner-content">
+            
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+
+            <div class="title-bar">
+                <button class="back-icon-btn" onclick="goBack()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+                <h2 class="detail-section-title">Archive Description</h2>
+            </div>
+            
+            <img class="archive-image" src="type-rstrui.exe.png" alt="Windows Preinstallation Environment Screenshot">
+            
+            <div class="description-text">
+                <p>
+                    The Windows Preinstallation Environment (Windows PE) is a lightweight version of Windows used for deploying, maintaining, and repairing Windows operating systems. It is the core boot system used by tools like Windows Setup and Windows Recovery Environment (Windows RE).
+                </p>
+                <p>
+                    This Hilarious Monkey PE build is a minimal, bootable environment that includes networking support, disk management utilities, and command-line access. It is ideal for disk imaging, running hardware diagnostics, and restoring systems before the full operating system environment is available.
+                </p>
+                <p>
+                    <strong>Key Features:</strong> Full command-line access, support for custom scripts, network functionality, and a small footprint for quick booting. This archive is essential for system administrators and power users needing deep system access for repair or deployment.
+                </p>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h2 class="detail-section-title">Download & Specs</h2>
+                <p>
+                    <strong>File Name:</strong> <code>WinPE_11_25H2_HilariousMonkey.iso</code> <br>
+                    <strong>File Size:</strong> 380 MB <br>
+                    <strong>SHA-256 Hash:</strong> <code>2CF342D21BA6E5F41CC41511B0AD9DEE1F7ADB0F87DB9CDB6B84121F353A0D37</code>
+                </p>
+                <a href="WinPE.iso" class="download-btn" download>
+                    Download Windows PE Archive
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('nav-open');
+                    menuToggle.classList.toggle('nav-open');
+                });
+
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('nav-open');
+                        menuToggle.classList.remove('nav-open');
+                    });
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
